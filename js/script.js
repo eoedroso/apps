@@ -47,35 +47,9 @@ var game = (function () {
 
     function init() {
         
-          var xIni = 30; // Dedault X position;
-          var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
+//			
         //Obtenemos el elemento con el que vamos a trabajar
-    	var elementoTouch= document.getElementById("canvas");
-        
-          elementoTouch.addEventListener('touchstart', function(e){
-              if (e.targetTouches.length == 1) { 
-          var touch = e.targetTouches[0]; 
-          xIni = touch.pageX;
-          yIni = touch.pageY;
-       }
-          }, false);
-          
-          elementoTouch.addEventListener('touchmove', function(e){
-          //Comprobamos si hay varios eventos del mismo tipo
-          if (e.targetTouches.length == 1) { 
-          var touch = e.targetTouches[0]; 
-           // con esto solo se procesa UN evento touch
-          if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-              keydown(37);
-            
-          }
-          
-          if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-           keydown(39);
-          } 
-       }
-          }, false); 
-          
+		var elementoTouch= document.getElementById("canvas");
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext("2d");
 
@@ -97,10 +71,29 @@ var game = (function () {
 
         player = new Player
         enemy = new Enemy
+		var xIni = 30; // Dedault X position;
+		var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
+		 elementoTouch.addEventListener('touchmove', function(e){
+          //Comprobamos si hay varios eventos del mismo tipo
+          if (e.targetTouches.length == 1) { 
+          var touch = e.targetTouches[0]; 
+           // con esto solo se procesa UN evento touch
+          if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
+			      alert("el swipe se genera hacia la izquierda");
+             // keydown(37);
+            
+          }
+          
+          if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
+			      alert("el swipe se genera hacia la derecha");
+          // keydown(39);
+          } 
+       }
+          }, false); 
 
         // Attach keyboard control
-         addListener(document, 'keydown', keyDown);
-        addListener(document, 'keyup', keyUp);
+         //addListener(document, 'keydown', keyDown);
+        //addListener(document, 'keyup', keyUp);
 
         // Gameloop
         var anim = function () {
@@ -109,6 +102,10 @@ var game = (function () {
         };
         anim();
     }
+	
+	
+		 
+
 
     function Player(player) {
         player = new Image();
