@@ -47,9 +47,6 @@ var game = (function () {
 
     function init() {
         
-         player.posX = 30; // Dedault X position
-        player.posY = (canvas.height / 2) - (player.height / 2); // Default Y posiion
-    
           var xIni = 30; // Dedault X position;
           var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
         //Obtenemos el elemento con el que vamos a trabajar
@@ -102,7 +99,7 @@ var game = (function () {
         enemy = new Enemy
 
         // Attach keyboard control
-        // addListener(document, 'keydown', keyDown);
+         addListener(document, 'keydown', keyDown);
         addListener(document, 'keyup', keyUp);
 
         // Gameloop
