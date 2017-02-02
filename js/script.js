@@ -47,10 +47,36 @@ var game = (function () {
 
     function init() {
         
-         //TODO kike
-    	//Obtenemos el elemento con el que vamos a trabajar
+    
+          var xIni;
+          var yIni;
+        //Obtenemos el elemento con el que vamos a trabajar
     	var elementoTouch= document.getElementById("canvas");
         
+          elementoTouch.addEventListener('touchstart', function(e){
+              if (e.targetTouches.length == 1) { 
+          var touch = e.targetTouches[0]; 
+          xIni = touch.pageX;
+          yIni = touch.pageY;
+       }
+          }, false);
+          
+          elementoTouch.addEventListener('touchmove', function(e){
+          //Comprobamos si hay varios eventos del mismo tipo
+          if (e.targetTouches.length == 1) { 
+          var touch = e.targetTouches[0]; 
+           // con esto solo se procesa UN evento touch
+          if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
+              keydown(37);
+            
+          }
+          
+          if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
+           keydown(39);
+          } 
+       }
+          }, false); 
+          
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext("2d");
 
@@ -72,22 +98,9 @@ var game = (function () {
 
         player = new Player
         enemy = new Enemy
-        
-        //TODO kike
-    	//posteriormente asignamos el manejador de eventos lo cual
-    	// se hace de manera convencional.
-    	elementoTouch.addEventListener('touchstart', function(event){
-    	//Comprobamos si hay varios eventos del mismo tipo
-    	if (event.targetTouches.length == 1) { 
-    	var touch = event.targetTouches[0]; 
-    	// con esto solo se procesa UN evento touch
-    	alert(" se ha producido un touchstart en las siguientes cordenas: X " + touch.pageX + " en Y " + touch.pageY);
-    	}
-
-    	}, false);
 
         // Attach keyboard control
-        addListener(document, 'keydown', keyDown);
+        // addListener(document, 'keydown', keyDown);
         addListener(document, 'keyup', keyUp);
 
         // Gameloop
@@ -217,13 +230,13 @@ var game = (function () {
     }
 
     function keyDown(e) {
-        var key = (window.event ? e.keyCode : e.which);
         for (var inkey in keyMap) {
             if (key === keyMap[inkey]) {
                 e.preventDefault();
                 keyPressed[inkey] = true;
             }
         }
+         keyUp(e);
     }
 
     function keyUp(e) {
