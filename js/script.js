@@ -47,9 +47,11 @@ var game = (function () {
 
     function init() {
         
+         player.posX = 30; // Dedault X position
+        player.posY = (canvas.height / 2) - (player.height / 2); // Default Y posiion
     
-          var xIni;
-          var yIni;
+          var xIni = 30; // Dedault X position;
+          var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
         //Obtenemos el elemento con el que vamos a trabajar
     	var elementoTouch= document.getElementById("canvas");
         
