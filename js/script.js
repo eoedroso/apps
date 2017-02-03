@@ -77,10 +77,10 @@ var game = (function () {
 			
 		//TODO kike
 	
-		//  elementoTouch.addEventListener("touchstart", handleStart, false);
+		  elementoTouch.addEventListener("touchstart", handleStart, false);
 		 // elementoTouch.addEventListener("touchend", handleEnd, false);
 		//  elementoTouch.addEventListener("touchcancel", handleCancel, false);
-		  elementoTouch.addEventListener("touchleave", handleLeave, false);
+		 // elementoTouch.addEventListener("touchleave", handleLeave, false);
 		  elementoTouch.addEventListener("touchmove", handleMove, false);
 
 	
@@ -95,40 +95,34 @@ var game = (function () {
         };
         anim();
     }
+
 	
-	//function handleEnd(ev){
-	//	alert("touchend");
-	//}
-		 
-		 function handleCancel(ev){
-		alert("touchcancel");
-	}
-	
-	function handleLeave(ev){
-		alert("touchleave");
-	}
-	
-	//function handleStart(ev){
-	//	alert("touchstart");
-	//}
-	
-	
-function handleMove (evt){
-	//	alert("touchmove");
-	          //Comprobamos si hay varios eventos del mismo tipo
+	function handleMove (evt){
+		//alert("touchstart");
+		//Comprobamos si hay varios eventos del mismo tipo
           if (evt.targetTouches.length == 1) { 
           var touch = evt.targetTouches[0]; 
            // con esto solo se procesa UN evento touch
           if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			  //alert("el swipe se genera hacia arriba");
+			  alert("el swipe se genera hacia arriba");
               keydown(evt);          
           }         
           if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			 //alert("el swipe se genera hacia la abajo");
-				keydown(40);
+			 alert("el swipe se genera hacia la abajo");
+				//keydown(40);
           } 
        }
-          
+	}
+	
+	
+function  handleStart(evt){
+		//alert("touchstart");
+		if (evt.targetTouches.length == 1) { 
+			var touch = evt.targetTouches[0]; 
+			xIni = touch.pageX;
+			yIni = touch.pageY;
+		}
+	          
 }
 
     function Player(player) {
@@ -265,7 +259,7 @@ function handleMove (evt){
 	   		 alert("keyUp");
         for (var inkey in keyMap) {
             if (e === keyMap[inkey]) {
-            //    e.preventDefault();
+                e.preventDefault();
                 keyPressed[inkey] = false;
             }
         }
