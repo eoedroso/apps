@@ -71,27 +71,22 @@ var game = (function () {
 
         player = new Player
         enemy = new Enemy
+		
+		//TODO kike
+		function startup() {
+		  ementoTouch.addEventListener("touchstart", handleStart, false);
+		  elementoTouch.addEventListener("touchend", handleEnd, false);
+		  elementoTouch.addEventListener("touchcancel", handleCancel, false);
+		  elementoTouch.addEventListener("touchleave", handleLeave, false);
+		  elementoTouch.addEventListener("touchmove", handleMove, false);
+		}
+		
+		
+		
 		var xIni = 30; // Dedault X position;
 		var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
 		
-		 elementoTouch.addEventListener('touchmove', function(e){
-          //Comprobamos si hay varios eventos del mismo tipo
-          if (e.targetTouches.length == 1) { 
-          var touch = e.targetTouches[0]; 
-           // con esto solo se procesa UN evento touch
-          if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			  //alert("el swipe se genera hacia arriba");
-              keydown(38);
-            
-          }
-          
-          if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			 //alert("el swipe se genera hacia la abajo");
-				keydown(40);
-          } 
-       }
-          }, false); 
-
+		
         // Attach keyboard control
          //addListener(document, 'keydown', keyDown);
         //addListener(document, 'keyup', keyUp);
@@ -106,7 +101,22 @@ var game = (function () {
 	
 	
 		 
-
+function handleMove (evt){
+	          //Comprobamos si hay varios eventos del mismo tipo
+          if (evt.targetTouches.length == 1) { 
+          var touch = evt.targetTouches[0]; 
+           // con esto solo se procesa UN evento touch
+          if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
+			  //alert("el swipe se genera hacia arriba");
+              keydown(evt);          
+          }         
+          if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
+			 //alert("el swipe se genera hacia la abajo");
+				keydown(40);
+          } 
+       }
+          
+}
 
     function Player(player) {
         player = new Image();
@@ -227,9 +237,10 @@ var game = (function () {
     }
 
     function keyDown(e) {
+		 alert("keyDown");
         for (var inkey in keyMap) {
             if (e === keyMap[inkey]) {
-                //e.preventDefault();
+                e.preventDefault();
                 keyPressed[inkey] = true;
             }
         }
@@ -238,6 +249,7 @@ var game = (function () {
 
     function keyUp(e) {
        // var key = (window.event ? e.keyCode : e.which);
+	   		 alert("keyUp");
         for (var inkey in keyMap) {
             if (e === keyMap[inkey]) {
             //    e.preventDefault();
