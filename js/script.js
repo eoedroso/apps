@@ -104,12 +104,15 @@ var game = (function () {
           var touch = evt.targetTouches[0]; 
            // con esto solo se procesa UN evento touch
           if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			  alert("el swipe se genera hacia arriba");
-              keydown(evt);          
+			 // alert("el swipe se genera hacia adelante");
+            
+				e.preventDefault();
+                keyPressed[39] = true;	
+				keyPressed;  				
           }         
           if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			 alert("el swipe se genera hacia la abajo");
-				//keydown(40);
+			//alert("el swipe se genera hacia la atras");
+				keydown(37);
           } 
        }
 	}
@@ -244,25 +247,27 @@ function  handleStart(evt){
     }
 
     function keyDown(e) {
-		 alert("keyDown");
+		 var key = e;
         for (var inkey in keyMap) {
             if (e === keyMap[inkey]) {
                 e.preventDefault();
                 keyPressed[inkey] = true;
             }
         }
+		 alert("keyDown");
         // keyUp(e);
     }
 
     function keyUp(e) {
        // var key = (window.event ? e.keyCode : e.which);
-	   		 alert("keyUp");
+	   		
         for (var inkey in keyMap) {
             if (e === keyMap[inkey]) {
                 e.preventDefault();
                 keyPressed[inkey] = false;
             }
         }
+		 alert("keyUp");
     }
 
     function draw() {
