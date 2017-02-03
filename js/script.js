@@ -108,12 +108,12 @@ var game = (function () {
 		alert("touchleave");
 	}
 	
-//	function handleMove(ev){
-//		alert("touchmove");
-//	}
+	function handleStart(ev){
+		alert("touchstart");
+	}
 	
 	
-function handleStart (evt){
+function handleMove (evt){
 		alert("touchstart");
 	          //Comprobamos si hay varios eventos del mismo tipo
           if (evt.targetTouches.length == 1) { 
