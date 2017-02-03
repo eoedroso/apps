@@ -1,4 +1,4 @@
-window.requestAnimFrame = (function () {
+// window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame  ||
         window.mozRequestAnimationFrame     ||
@@ -79,14 +79,14 @@ var game = (function () {
           var touch = e.targetTouches[0]; 
            // con esto solo se procesa UN evento touch
           if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			      alert("el swipe se genera hacia la izquierda");
-             // keydown(37);
+			  //alert("el swipe se genera hacia la izquierda");
+              keydown(38);
             
           }
           
           if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			      alert("el swipe se genera hacia la derecha");
-          // keydown(39);
+			 //alert("el swipe se genera hacia la derecha");
+				keydown(40);
           } 
        }
           }, false); 
