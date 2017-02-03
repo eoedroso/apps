@@ -20,16 +20,6 @@ var game = (function () {
         bgMain, bgMain2, bgSpeed = 2,
         shots = [],      //Array of shots
         keyPressed = {}, // No es necesario iniciar todas las posiblidades a false.
-        keyMap = {
-            left: 37,
-            up: 38,
-            right: 39,
-            down: 40,
-            fire: 32,     // Spacebar
-            fire2: 17,    // Ctrl
-            speedUp: 34,  // Av Pag
-            speedDown: 33 // Re Pag
-        },
         nextShootTime = 0,
         shotDelay = 100,
         currentTime = 0;
@@ -46,10 +36,18 @@ var game = (function () {
     };
 
     function init() {
-        
-//			
+		  //iniciar hammer para detectar los toques
+		var myElement = document.getElementById('canvas');
+		var mc = new Hammer(myElement);
+
+	// listen to events...
+	mc.on("panleft panright tap press", function(ev) {
+    myElement.textContent = ev.type +" gesture detected.";
+		});
+		
+		
+   
         //Obtenemos el elemento con el que vamos a trabajar
-		var elementoTouch= document.getElementById("canvas");
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext("2d");
 
@@ -77,11 +75,11 @@ var game = (function () {
 			
 		//TODO kike
 	
-		  elementoTouch.addEventListener("touchstart", handleStart, false);
-		 // elementoTouch.addEventListener("touchend", handleEnd, false);
+		  canvas.addEventListener("touchstart", handleStart, false);
+		  elementoTouch.addEventListener("touchend", handleEnd, false);
 		//  elementoTouch.addEventListener("touchcancel", handleCancel, false);
 		 // elementoTouch.addEventListener("touchleave", handleLeave, false);
-		  elementoTouch.addEventListener("touchmove", handleMove, false);
+		  canvas.addEventListener("touchmove", handleMove, false);
 
 	
         // Attach keyboard control
@@ -96,9 +94,16 @@ var game = (function () {
         anim();
     }
 
+	function  handleStart(evt){
+		if (evt.targetTouches.length == 1) { 
+			var touch = evt.targetTouches[0]; 
+			xIni = touch.pageX;
+			yIni = touch.pageY;
+		}
+	          
+	}
 	
 	function handleMove (evt){
-		//alert("touchstart");
 		//Comprobamos si hay varios eventos del mismo tipo
           if (evt.targetTouches.length == 1) { 
           var touch = evt.targetTouches[0]; 
@@ -112,21 +117,14 @@ var game = (function () {
 		   keyPressed[39] = false;
           if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
 			//alert("el swipe se genera hacia la atras");
-				keydown(37);
+				//keydown(37);
           } 
        }
 	}
 	
-	
-function  handleStart(evt){
-		//alert("touchstart");
-		if (evt.targetTouches.length == 1) { 
-			var touch = evt.targetTouches[0]; 
-			xIni = touch.pageX;
-			yIni = touch.pageY;
-		}
-	          
-}
+	function handleEnd (evt){
+		 keyPressed[39] = false;
+	}
 
     function Player(player) {
         player = new Image();
@@ -213,7 +211,7 @@ function  handleStart(evt){
     }
 
     function playerAction() {
-	    	
+		
         if (keyPressed.up && player.posY > 5)
             player.posY -= player.speed;
         if (keyPressed.down && player.posY < (canvas.height - player.height - 5))
@@ -221,7 +219,7 @@ function  handleStart(evt){
         if (keyPressed.left && player.posX > 5)
             player.posX -= player.speed;
         if (keyPressed.right && player.posX < (canvas.width - player.width - 5))
-		alert("llego al movimiento adelante de la nave");
+			alert("llego al movimiento adelante de la nave");
             player.posX += player.speed;
         if (keyPressed.fire)
             player.fire();
@@ -248,18 +246,7 @@ function  handleStart(evt){
         } else return false;
     }
 
-    function keyDown(e) {
-		 var key = e;
-        for (var inkey in keyMap) {
-            if (e === keyMap[inkey]) {
-                e.preventDefault();
-                keyPressed[inkey] = true;
-            }
-        }
-		 alert("keyDown");
-        // keyUp(e);
-    }
-
+    
     function keyUp(e) {
        // var key = (window.event ? e.keyCode : e.which);
 	   		
