@@ -1,4 +1,4 @@
-// window.requestAnimFrame = (function () {
+ window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame  ||
         window.mozRequestAnimationFrame     ||
@@ -73,19 +73,20 @@ var game = (function () {
         enemy = new Enemy
 		var xIni = 30; // Dedault X position;
 		var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
+		
 		 elementoTouch.addEventListener('touchmove', function(e){
           //Comprobamos si hay varios eventos del mismo tipo
           if (e.targetTouches.length == 1) { 
           var touch = e.targetTouches[0]; 
            // con esto solo se procesa UN evento touch
           if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			  //alert("el swipe se genera hacia la izquierda");
+			  //alert("el swipe se genera hacia arriba");
               keydown(38);
             
           }
           
           if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			 //alert("el swipe se genera hacia la derecha");
+			 //alert("el swipe se genera hacia la abajo");
 				keydown(40);
           } 
        }
@@ -227,19 +228,19 @@ var game = (function () {
 
     function keyDown(e) {
         for (var inkey in keyMap) {
-            if (key === keyMap[inkey]) {
-                e.preventDefault();
+            if (e === keyMap[inkey]) {
+                //e.preventDefault();
                 keyPressed[inkey] = true;
             }
         }
-         keyUp(e);
+        // keyUp(e);
     }
 
     function keyUp(e) {
-        var key = (window.event ? e.keyCode : e.which);
+       // var key = (window.event ? e.keyCode : e.which);
         for (var inkey in keyMap) {
-            if (key === keyMap[inkey]) {
-                e.preventDefault();
+            if (e === keyMap[inkey]) {
+            //    e.preventDefault();
                 keyPressed[inkey] = false;
             }
         }
