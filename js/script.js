@@ -77,7 +77,7 @@ var game = (function () {
 			
 		//TODO kike
 	
-		  elementoTouch.addEventListener("touchstart", handleStart, false);
+		//  elementoTouch.addEventListener("touchstart", handleStart, false);
 		  elementoTouch.addEventListener("touchend", handleEnd, false);
 		  elementoTouch.addEventListener("touchcancel", handleCancel, false);
 		  elementoTouch.addEventListener("touchleave", handleLeave, false);
@@ -108,9 +108,9 @@ var game = (function () {
 		alert("touchleave");
 	}
 	
-	function handleStart(ev){
-		alert("touchstart");
-	}
+	//function handleStart(ev){
+	//	alert("touchstart");
+	//}
 	
 	
 function handleMove (evt){
