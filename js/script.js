@@ -76,13 +76,13 @@ var game = (function () {
 		var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
 			
 		//TODO kike
-		function startup() {
-		  ementoTouch.addEventListener("touchstart", handleStart, false);
+	
+		  elementoTouch.addEventListener("touchstart", handleStart, false);
 		  elementoTouch.addEventListener("touchend", handleEnd, false);
 		  elementoTouch.addEventListener("touchcancel", handleCancel, false);
 		  elementoTouch.addEventListener("touchleave", handleLeave, false);
 		  elementoTouch.addEventListener("touchmove", handleMove, false);
-		}
+
 	
         // Attach keyboard control
          //addListener(document, 'keydown', keyDown);
