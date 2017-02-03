@@ -106,7 +106,7 @@ var game = (function () {
           if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
 			 // alert("el swipe se genera hacia adelante");
             
-				e.preventDefault();
+				evt.preventDefault();
                 keyPressed[39] = true;	
 				keyPressed;  				
           }         
