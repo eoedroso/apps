@@ -79,7 +79,7 @@ var game = (function () {
 	
 		//  elementoTouch.addEventListener("touchstart", handleStart, false);
 		  elementoTouch.addEventListener("touchend", handleEnd, false);
-		  elementoTouch.addEventListener("touchcancel", handleCancel, false);
+		//  elementoTouch.addEventListener("touchcancel", handleCancel, false);
 		  elementoTouch.addEventListener("touchleave", handleLeave, false);
 		  elementoTouch.addEventListener("touchmove", handleMove, false);
 
@@ -114,7 +114,7 @@ var game = (function () {
 	
 	
 function handleMove (evt){
-		alert("touchmove");
+	//	alert("touchmove");
 	          //Comprobamos si hay varios eventos del mismo tipo
           if (evt.targetTouches.length == 1) { 
           var touch = evt.targetTouches[0]; 
