@@ -213,7 +213,7 @@ function  handleStart(evt){
     }
 
     function playerAction() {
-	    	alert("llego al movimiento");
+	    	
         if (keyPressed.up && player.posY > 5)
             player.posY -= player.speed;
         if (keyPressed.down && player.posY < (canvas.height - player.height - 5))
@@ -221,6 +221,7 @@ function  handleStart(evt){
         if (keyPressed.left && player.posX > 5)
             player.posX -= player.speed;
         if (keyPressed.right && player.posX < (canvas.width - player.width - 5))
+		alert("llego al movimiento adelante de la nave");
             player.posX += player.speed;
         if (keyPressed.fire)
             player.fire();
