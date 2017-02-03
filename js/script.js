@@ -114,7 +114,7 @@ var game = (function () {
 	
 	
 function handleMove (evt){
-		alert("touchstart");
+		alert("touchmove");
 	          //Comprobamos si hay varios eventos del mismo tipo
           if (evt.targetTouches.length == 1) { 
           var touch = evt.targetTouches[0]; 
