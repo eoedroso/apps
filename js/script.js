@@ -72,6 +72,9 @@ var game = (function () {
         player = new Player
         enemy = new Enemy
 		
+		var xIni = 30; // Dedault X position;
+		var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
+			
 		//TODO kike
 		function startup() {
 		  ementoTouch.addEventListener("touchstart", handleStart, false);
@@ -80,13 +83,7 @@ var game = (function () {
 		  elementoTouch.addEventListener("touchleave", handleLeave, false);
 		  elementoTouch.addEventListener("touchmove", handleMove, false);
 		}
-		
-		
-		
-		var xIni = 30; // Dedault X position;
-		var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
-		
-		
+	
         // Attach keyboard control
          //addListener(document, 'keydown', keyDown);
         //addListener(document, 'keyup', keyUp);
@@ -99,9 +96,25 @@ var game = (function () {
         anim();
     }
 	
-	
+	function handleEnd(ev){
+		alert("touchend");
+	}
 		 
-function handleMove (evt){
+		 function handleCancel(ev){
+		alert("touchcancel");
+	}
+	
+	function handleLeave(ev){
+		alert("touchleave");
+	}
+	
+	function handleMove(ev){
+		alert("touchmove");
+	}
+	
+	
+function handleStart (evt){
+		alert("touchstart");
 	          //Comprobamos si hay varios eventos del mismo tipo
           if (evt.targetTouches.length == 1) { 
           var touch = evt.targetTouches[0]; 
