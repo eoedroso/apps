@@ -108,9 +108,9 @@ var game = (function () {
 		alert("touchleave");
 	}
 	
-	function handleMove(ev){
-		alert("touchmove");
-	}
+//	function handleMove(ev){
+//		alert("touchmove");
+//	}
 	
 	
 function handleStart (evt){
