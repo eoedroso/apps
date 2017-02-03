@@ -213,6 +213,7 @@ function  handleStart(evt){
     }
 
     function playerAction() {
+	    	alert("llego al movimiento");
         if (keyPressed.up && player.posY > 5)
             player.posY -= player.speed;
         if (keyPressed.down && player.posY < (canvas.height - player.height - 5))
