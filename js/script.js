@@ -107,9 +107,9 @@ var game = (function () {
 			 // alert("el swipe se genera hacia adelante");
             
 				evt.preventDefault();
-                keyPressed[39] = true;	
-				keyPressed;  				
+                keyPressed[39] = true;		 				
           }         
+		   keyPressed[39] = false;
           if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
 			//alert("el swipe se genera hacia la atras");
 				keydown(37);
