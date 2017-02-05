@@ -1,4 +1,4 @@
- window.requestAnimFrame = (function () {
+	window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame  ||
         window.mozRequestAnimationFrame     ||
@@ -33,20 +33,11 @@ var game = (function () {
         for (var property in source)
             destination[property] = source[property];
         return destination;
-    };
+    }
 
     function init() {
-		  //iniciar hammer para detectar los toques
-		var myElement = document.getElementById('canvas');
-		var mc = new Hammer(myElement);
 
-	// listen to events...
-	mc.on("panleft panright tap press", function(ev) {
-    myElement.textContent = ev.type +" gesture detected.";
-		});
-		
-		
-   
+  
         //Obtenemos el elemento con el que vamos a trabajar
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext("2d");
@@ -56,7 +47,6 @@ var game = (function () {
         buffer.width = canvas.width;
         buffer.height = canvas.height;
         bufferctx = buffer.getContext('2d');
-
         // Load resources
         // Background pattern
         bgMain = new Image();
@@ -66,26 +56,12 @@ var game = (function () {
         bgMain2 = new Image();
         bgMain2.src = 'images/landscape.png';
         bgMain2.posX = 0;
-
-        player = new Player
-        enemy = new Enemy
 		
-		var xIni = 30; // Dedault X position;
-		var yIni = (canvas.height / 2) - (player.height / 2); // Default Y posiion;
-			
-		//TODO kike
+		iniciaHammer();
+        
+		player = new Player
+        enemy = new Enemy
 	
-		  canvas.addEventListener("touchstart", handleStart, false);
-		  elementoTouch.addEventListener("touchend", handleEnd, false);
-		//  elementoTouch.addEventListener("touchcancel", handleCancel, false);
-		 // elementoTouch.addEventListener("touchleave", handleLeave, false);
-		  canvas.addEventListener("touchmove", handleMove, false);
-
-	
-        // Attach keyboard control
-         //addListener(document, 'keydown', keyDown);
-        //addListener(document, 'keyup', keyUp);
-
         // Gameloop
         var anim = function () {
             loop();
@@ -94,37 +70,23 @@ var game = (function () {
         anim();
     }
 
-	function  handleStart(evt){
-		if (evt.targetTouches.length == 1) { 
-			var touch = evt.targetTouches[0]; 
-			xIni = touch.pageX;
-			yIni = touch.pageY;
-		}
-	          
+    function iniciaHammer () {
+		var zona = document.getElementById('canvas');
+		var hammertime = new Hammer(zona);
+
+		hammertime.on('doubletap', function(ev) {
+			playerAction(ev);
+		});
+
+		hammertime.on('press', function(ev) {
+		//mirar si press es hacia abajo o hacia arriba
+		});
+		
+		hammertime.on('swipe', function(ev) {
+			playerAction(ev);
+		});
 	}
-	
-	function handleMove (evt){
-		//Comprobamos si hay varios eventos del mismo tipo
-          if (evt.targetTouches.length == 1) { 
-          var touch = evt.targetTouches[0]; 
-           // con esto solo se procesa UN evento touch
-          if((touch.pageX>xIni+20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			 // alert("el swipe se genera hacia adelante");
-            
-				evt.preventDefault();
-                keyPressed[39] = true;		 				
-          }         
-		   keyPressed[39] = false;
-          if((touch.pageX<xIni-20) && (touch.pageY> yIni-5) && (touch.pageY<yIni+5)){
-			//alert("el swipe se genera hacia la atras");
-				//keydown(37);
-          } 
-       }
-	}
-	
-	function handleEnd (evt){
-		 keyPressed[39] = false;
-	}
+
 
     function Player(player) {
         player = new Image();
@@ -203,35 +165,36 @@ var game = (function () {
         for (var x = 0, i = settings.source.length; x < i; x++) {
             settings.source[x].posX -= settings.speed;
             if (settings.source[x].posX > -(settings.source[x].width)) {
-                bufferctx.drawImage(settings.source[x], settings.source[x].posX, 0);
+               bufferctx.drawImage(settings.source[x], settings.source[x].posX, 0);
+
             } else {
                 settings.source[x].posX = settings.source[x].width - (canvas.width / 380) - 600;
             }
         }
     }
 
-    function playerAction() {
-		
-        if (keyPressed.up && player.posY > 5)
-            player.posY -= player.speed;
-        if (keyPressed.down && player.posY < (canvas.height - player.height - 5))
-            player.posY += player.speed;
-        if (keyPressed.left && player.posX > 5)
-            player.posX -= player.speed;
-        if (keyPressed.right && player.posX < (canvas.width - player.width - 5))
-			alert("llego al movimiento adelante de la nave");
-            player.posX += player.speed;
-        if (keyPressed.fire)
-            player.fire();
-        if (keyPressed.speedUp && bgSpeed < 10) {
-            bgSpeed += 1;
-            console.log(bgSpeed);
-        }
-        if (keyPressed.speedDown && bgSpeed >= 2) {
-            bgSpeed -= 1;
-            console.log(bgSpeed);
-        }
-    }
+    function playerAction(ev) {
+		if (ev != null){
+			if (keyPressed.up && player.posY > 5)
+				player.posY -= player.speed;
+			if (keyPressed.down && player.posY < (canvas.height - player.height - 5))
+				player.posY += player.speed;
+			if (ev.direction==2 && player.posX > 5)
+				player.posX -= player.speed;
+			if (ev.direction==4 && player.posX < (canvas.width - player.width - 5))
+				player.posX += player.speed;
+			if (ev.type=='doubletap')
+				player.fire();
+			if (keyPressed.speedUp && bgSpeed < 10) {
+				bgSpeed += 1;
+				console.log(bgSpeed);
+			}
+			if (keyPressed.speedDown && bgSpeed >= 2) {
+				bgSpeed -= 1;
+				console.log(bgSpeed);
+			}
+		}
+	}
 
     /**
      * CrossBrowser implementation for a Event Listener
@@ -292,5 +255,5 @@ var game = (function () {
     return {
         init: init
     }
-
+	
 })();
