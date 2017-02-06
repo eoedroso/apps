@@ -80,6 +80,13 @@ var game = (function () {
 
 		hammertime.on('press', function(ev) {
 		//mirar si press es hacia abajo o hacia arriba
+		if(ev.press){
+			alert("ev. press ");
+		}
+		if (ev.pressup){
+			alert("ev. press up");
+		}
+			playerAction(ev);
 		});
 		
 		hammertime.on('swipe', function(ev) {
@@ -175,20 +182,31 @@ var game = (function () {
 
     function playerAction(ev) {
 		if (ev != null){
-			if (keyPressed.up && player.posY > 5)
-				player.posY -= player.speed;
-			if (keyPressed.down && player.posY < (canvas.height - player.height - 5))
-				player.posY += player.speed;
+			if(ev.type=='press'){
+				if (ev.deltaY > player.posY && player.posY > 5){
+					//subir
+					player.posY -= player.speed;
+				}
+				if (ev.deltaY < player.posY  && player.posY < (canvas.height - player.height - 5)){
+					//bajar
+					player.posY += player.speed;
+				}		
+			}
+			//retroceso
 			if (ev.direction==2 && player.posX > 5)
 				player.posX -= player.speed;
+			//avance
 			if (ev.direction==4 && player.posX < (canvas.width - player.width - 5))
 				player.posX += player.speed;
+			//disparo
 			if (ev.type=='doubletap')
 				player.fire();
+			//mas velicidad
 			if (keyPressed.speedUp && bgSpeed < 10) {
 				bgSpeed += 1;
 				console.log(bgSpeed);
 			}
+			//menos velocidad
 			if (keyPressed.speedDown && bgSpeed >= 2) {
 				bgSpeed -= 1;
 				console.log(bgSpeed);
@@ -219,7 +237,6 @@ var game = (function () {
                 keyPressed[inkey] = false;
             }
         }
-		 alert("keyUp");
     }
 
     function draw() {
