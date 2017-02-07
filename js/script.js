@@ -108,8 +108,8 @@ var game = (function () {
     function Player(player) {
         player = new Image();
         player.src = 'images/ship.png';
-        player.posX = 30; // Dedault X position
-        player.posY = (canvas.height / 2) - (player.height / 2); // Default Y posiion
+        player.posX = 20; // Default X position
+        player.posY = (canvas.height / 2) - (player.height / 2); // Default Y position
         player.speed = 5;
 
         player.fire = function () {
@@ -145,14 +145,14 @@ var game = (function () {
     function Enemy(enemy, _x, _y) {
         enemy = new Image();
         enemy.src = 'images/enemy.png'; 
-		 //player.posX = 30; 
-        enemy.posX = (canvas.width - 50) - enemy.width;
-        enemy.posY = canvas.height / 2 - enemy.width / 2;
+		 
+        enemy.posX = canvas.width/2  - enemy.width; // Default X position
+        enemy.posY = canvas.height / 2 - enemy.width / 2; // Default Y position
         enemy.life = 5; //5 hits
         enemy.backToLife = function () {
             this.life = 1;
             this.posY = Math.floor(Math.random() * (canvas.height - this.height));
-            this.posX = Math.floor(Math.random() * (canvas.width - this.width - player.width)) + player.width;
+            this.posX = Math.floor(Math.random() * (canvas.width - this.width - player.width)) + player.width + 100;
         }
         return enemy;
     }
