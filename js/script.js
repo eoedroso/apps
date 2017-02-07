@@ -1,9 +1,6 @@
 	window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame  ||
-        window.mozRequestAnimationFrame     ||
-        window.oRequestAnimationFrame       ||
-        window.msRequestAnimationFrame      ||
+    
         function ( /* function */ callback, /* DOMElement */ element) {
             window.setTimeout(callback, 1000 / 60);
         };
@@ -16,10 +13,16 @@ arrayRemove = function (array, from) {
 var game = (function () {
 
     // Global vars
-    var canvas, ctx, buffer, bufferctx, gameloop, fps = 34,
+    var canvas, ctx, buffer, bufferctx, gameloop,
         bgMain, bgMain2, bgSpeed = 2,
         shots = [],      //Array of shots
-        keyPressed = {}, // No es necesario iniciar todas las posiblidades a false.
+        keyPressed = {
+			left: false,
+            up: false,
+            right:false,
+            down: false,
+            fire: false
+		}, // No es necesario iniciar todas las posiblidades a false.
         nextShootTime = 0,
         shotDelay = 100,
         currentTime = 0;
@@ -37,7 +40,6 @@ var game = (function () {
 
     function init() {
 
-  
         //Obtenemos el elemento con el que vamos a trabajar
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext("2d");
@@ -58,10 +60,10 @@ var game = (function () {
         bgMain2.posX = 0;
 		
 		iniciaHammer();
-        
+		 
 		player = new Player
         enemy = new Enemy
-	
+		
         // Gameloop
         var anim = function () {
             loop();
@@ -73,27 +75,35 @@ var game = (function () {
     function iniciaHammer () {
 		var zona = document.getElementById('canvas');
 		var hammertime = new Hammer(zona);
-
-		hammertime.on('doubletap', function(ev) {
-			playerAction(ev);
-		});
-
-		hammertime.on('press', function(ev) {
-		//mirar si press es hacia abajo o hacia arriba
-		if(ev.press){
-			alert("ev. press ");
-		}
-		if (ev.pressup){
-			alert("ev. press up");
-		}
-			playerAction(ev);
+		
+		hammertime.on('tap', function(ev) {
+			if (keyPressed.fire == true){
+				keyPressed.fire = false;
+			}
+			else{
+				keyPressed.fire = true;
+			}
 		});
 		
+		hammertime.on('doubletap', function(ev) {
+		//	keyPressed.fire = true;
+		});
+		hammertime.on('press', function(ev) {
+			var pos = ev.pointers[0].clientY;
+			if (pos <  player.posY){
+				keyPressed.up = true;
+			}else {
+				keyPressed.down = true;
+			}
+		});
+		hammertime.on('pressup', function(ev) {	
+                keyPressed.up = false;
+				keyPressed.down = false;
+				
+		});
 		hammertime.on('swipe', function(ev) {
-			playerAction(ev);
 		});
 	}
-
 
     function Player(player) {
         player = new Image();
@@ -134,12 +144,13 @@ var game = (function () {
 
     function Enemy(enemy, _x, _y) {
         enemy = new Image();
-        enemy.src = 'images/enemy.png'; //128x128
-        enemy.posX = canvas.width - enemy.width;
+        enemy.src = 'images/enemy.png'; 
+		 //player.posX = 30; 
+        enemy.posX = (canvas.width - 50) - enemy.width;
         enemy.posY = canvas.height / 2 - enemy.width / 2;
-        enemy.life = 5; //5 hits
+        enemy.life = 1; //5 hits
         enemy.backToLife = function () {
-            this.life = 5;
+            this.life = 1;
             this.posY = Math.floor(Math.random() * (canvas.height - this.height));
             this.posX = Math.floor(Math.random() * (canvas.width - this.width - player.width)) + player.width;
         }
@@ -180,64 +191,28 @@ var game = (function () {
         }
     }
 
-    function playerAction(ev) {
-		if (ev != null){
-			if(ev.type=='press'){
-				if (ev.deltaY > player.posY && player.posY > 5){
-					//subir
-					player.posY -= player.speed;
-				}
-				if (ev.deltaY < player.posY  && player.posY < (canvas.height - player.height - 5)){
-					//bajar
-					player.posY += player.speed;
-				}		
-			}
-			//retroceso
-			if (ev.direction==2 && player.posX > 5)
-				player.posX -= player.speed;
-			//avance
-			if (ev.direction==4 && player.posX < (canvas.width - player.width - 5))
-				player.posX += player.speed;
-			//disparo
-			if (ev.type=='doubletap')
-				player.fire();
-			//mas velicidad
-			if (keyPressed.speedUp && bgSpeed < 10) {
-				bgSpeed += 1;
-				console.log(bgSpeed);
-			}
-			//menos velocidad
-			if (keyPressed.speedDown && bgSpeed >= 2) {
-				bgSpeed -= 1;
-				console.log(bgSpeed);
-			}
+    function playerAction() {
+
+		if (keyPressed.up && player.posY > 5){
+			player.posY -= player.speed;
+
 		}
+		if (keyPressed.down && player.posY < (canvas.height - player.height - 5))
+			player.posY += player.speed;
+		
+		if (keyPressed.left && player.posX > 5)
+			player.posX -= player.speed;
+		
+		if (keyPressed.right && player.posX < (canvas.width - player.width - 5))
+			player.posX += player.speed;
+		
+		if (keyPressed.fire){
+			player.fire();	
+			keyPressed.fire = false;
+				
+		}
+					
 	}
-
-    /**
-     * CrossBrowser implementation for a Event Listener
-     */
-    function addListener(element, type, expression, bubbling) {
-        bubbling = bubbling || false;
-
-        if (window.addEventListener) { // Standard
-            element.addEventListener(type, expression, bubbling);
-        } else if (window.attachEvent) { // IE
-            element.attachEvent('on' + type, expression);
-        } else return false;
-    }
-
-    
-    function keyUp(e) {
-       // var key = (window.event ? e.keyCode : e.which);
-	   		
-        for (var inkey in keyMap) {
-            if (e === keyMap[inkey]) {
-                e.preventDefault();
-                keyPressed[inkey] = false;
-            }
-        }
-    }
 
     function draw() {
         ctx.drawImage(buffer, 0, 0);
