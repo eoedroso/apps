@@ -94,9 +94,10 @@ var game = (function () {
 		});
 		hammertime.on('press', function(ev) {
 			var pos = ev.pointers[0].clientY;
-			if (pos <  player.posY){
+			if (pos <= player.posY){
 				keyPressed.up = true;
-			}else {
+			}
+			if (pos > player.posY){
 				keyPressed.down = true;
 			}
 		});
