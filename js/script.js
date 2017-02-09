@@ -15,6 +15,7 @@ var game = (function () {
     // Global vars
     var canvas, ctx, buffer, bufferctx, gameloop,
         bgMain, bgMain2, bgSpeed = 2,
+		ancho,alto,
         shots = [],      //Array of shots
         keyPressed = {
 			left: false,
@@ -22,7 +23,7 @@ var game = (function () {
             right:false,
             down: false,
             fire: false
-		}, // No es necesario iniciar todas las posiblidades a false.
+		},
         nextShootTime = 0,
         shotDelay = 100,
         currentTime = 0;
@@ -49,6 +50,9 @@ var game = (function () {
         buffer.width = canvas.width;
         buffer.height = canvas.height;
         bufferctx = buffer.getContext('2d');
+		
+		ancho = document.getElementById('canvas').offsetWidth;
+		alto = document.getElementById('canvas').offsetHeight;
         // Load resources
         // Background pattern
         bgMain = new Image();
@@ -106,10 +110,14 @@ var game = (function () {
 	}
 
     function Player(player) {
+		
         player = new Image();
         player.src = 'images/ship.png';
-        player.posX = 20; // Default X position
-        player.posY = (canvas.height / 2) - (player.height / 2); // Default Y position
+        player.posX = 5; // Default X position
+        player.posY = (alto / 2) - (player.height / 2); // Default Y position
+		
+	
+		
         player.speed = 5;
 
         player.fire = function () {
@@ -146,13 +154,16 @@ var game = (function () {
         enemy = new Image();
         enemy.src = 'images/enemy.png'; 
 		 
-        enemy.posX = canvas.width/2  - enemy.width; // Default X position
-        enemy.posY = canvas.height / 2 - enemy.width / 2; // Default Y position
-        enemy.life = 5; //5 hits
+        enemy.posX = ancho / 2  + enemy.width; // Default X position
+        enemy.posY = alto / 2 - enemy.width / 2; // Default Y position
+        enemy.life = 1; //5 hits
         enemy.backToLife = function () {
             this.life = 1;
-            this.posY = Math.floor(Math.random() * (canvas.height - this.height));
-            this.posX = Math.floor(Math.random() * (canvas.width - this.width - player.width)) + player.width + 100;
+            this.posY = Math.floor(Math.random() * (alto - this.height));
+            this.posX = Math.floor(Math.random() * (ancho - player.width ));
+			if ( this.posX < player.width){
+				this.posX = this.posX + player.width;
+			}
         }
         return enemy;
     }
